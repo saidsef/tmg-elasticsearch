@@ -12,4 +12,7 @@ chef_gem "chef-rewind"
 require 'chef/rewind'
 
 include_recipe 'elasticsearch::default'
+include_recipe 'elasticsearch::ebs'
+include_recipe 'elasticsearch::data'
+include_recipe 'elasticsearch::plugins'
 include_recipe 'elasticsearch::aws'
