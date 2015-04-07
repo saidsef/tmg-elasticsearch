@@ -1,6 +1,6 @@
 name             'tmg-elasticsearch'
 maintainer       'Telegraph Media Group'
-maintainer_email 'said.sefΩtelegrapg.co.uk'
+maintainer_email 'said.sef@telegrapg.co.uk'
 license          'All rights reserved'
 description      'TMG Installs/Configures tmg-elasticsearch'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
