@@ -2,7 +2,7 @@ source "https://supermarket.chef.io"
 
 metadata
 
-cookbook 'elasticsearch', '~> 0.3.13'
+cookbook 'elasticsearch', '~> 0.3'
 cookbook 'apt'
 cookbook 'yum'
 cookbook 'ark'

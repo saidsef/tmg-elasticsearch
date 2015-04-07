@@ -8,5 +8,8 @@
 #
 # Copyright 2011, TMG
 
+chef_gem "chef-rewind"
+require 'chef/rewind'
+
 include_recipe 'elasticsearch::default'
 include_recipe 'elasticsearch::aws'
