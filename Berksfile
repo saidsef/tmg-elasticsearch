@@ -2,7 +2,7 @@ source "https://supermarket.chef.io"
 
 metadata
 
-cookbook 'elasticsearch', '~> 0.3'
+cookbook 'elasticsearch', :git => 'ssh://git@stash.aws.telegraph.co.uk:8080/cc/elasticsearch.git'
 cookbook 'apt'
 cookbook 'yum'
 cookbook 'ark'
