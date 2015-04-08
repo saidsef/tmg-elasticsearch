@@ -14,4 +14,4 @@ override['elasticsearch']['rpm_sha'] = "ec8b41c54a6d897479645b2507476e0824bc71db
 
 # === PLUGIN
 
-override['elasticsearch']['plugins']['elasticsearch/elasticsearch-cloud-aws']['version'] = '2.5.0'
+override['elasticsearch']['plugins']['elasticsearch/elasticsearch-cloud-aws']['version'] = '2.4.1'
