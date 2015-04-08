@@ -13,7 +13,7 @@ require 'chef/rewind'
 
 include_recipe 'elasticsearch::default'
 
-rewind :template => "#{node.elasticsearch[:path][:conf]/elasticsearch.yml" do
+rewind :template => "elasticsearch.yml" do
   source "elasticsearch.yml.erb"
   cookbook_name "tmg-elasticsearch"
 end
