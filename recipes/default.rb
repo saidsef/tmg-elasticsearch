@@ -11,7 +11,13 @@
 chef_gem "chef-rewind"
 require 'chef/rewind'
 
-include_recipe 'elasticsearch::deb'
+case node['platform']
+when "ubuntu","debian"
+  include_recipe 'elasticsearch::deb'
+when "centos","redhat","fedora"
+   include_recipe 'elasticsearch::rpm'
+end
+
 include_recipe 'elasticsearch::default'
 
 rewind :template => "elasticsearch.yml" do
