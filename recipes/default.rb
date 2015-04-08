@@ -12,6 +12,12 @@ chef_gem "chef-rewind"
 require 'chef/rewind'
 
 include_recipe 'elasticsearch::default'
+
+rewind :template => "#{node.elasticsearch[:path][:conf]/elasticsearch.yml" do
+  source "elasticsearch.yml.erb"
+  cookbook_name "tmg-elasticsearch"
+end
+
 include_recipe 'elasticsearch::ebs'
 include_recipe 'elasticsearch::data'
 include_recipe 'elasticsearch::plugins'
