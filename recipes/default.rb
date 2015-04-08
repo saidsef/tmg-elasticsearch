@@ -11,6 +11,7 @@
 chef_gem "chef-rewind"
 require 'chef/rewind'
 
+include_recipe 'elasticsearch::deb'
 include_recipe 'elasticsearch::default'
 
 rewind :template => "elasticsearch.yml" do
