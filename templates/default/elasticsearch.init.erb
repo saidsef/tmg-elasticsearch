@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
-# Short-Description: Starts elasticsearch
-# Description:       Starts elasticsearch
+#
+# elasticsearch
+#
+# chkconfig:   - 57 47
+# description: elasticsearch
+# processname: elasticsearch
 # config:      <%= node[:elasticsearch][:path][:conf] %>/elasticsearch.yml
 
 # Source networking configuration
@@ -18,115 +22,150 @@ ulimit -l <%= node[:elasticsearch][:limits][:memlock] %>
 
 PIDFILE='<%= node.elasticsearch[:pid_file] %>'
 ES_INCLUDE='<%= node.elasticsearch[:path][:conf] %>/elasticsearch-env.sh'
+CHECK_PID_RUNNING=$(ps ax | grep 'java' | grep -e "es.pidfile=$PIDFILE" | sed 's/^\s*\([0-9]*\)\s.*/\1/')
 
-if [ `id -u` -ne 0 ]; then
-	echo "You need root privileges to run this script"
-	exit 1
-fi
+start() {
+    if [ -f $PIDFILE ]; then
+      # PIDFILE EXISTS -- ES RUNNING?
+      echo -e "\033[31;1mPID file found in $PIDFILE, elasticsearch already running?\033[0m"
+      es_pid="$(cat $PIDFILE)"
+      pid_running="$( ps ax | grep 'java' | grep $es_pid )"
 
-# Run Elasticsearch as this user ID and group ID
-ES_USER=elasticsearch
-ES_GROUP=elasticsearch
-
-# The first existing directory is used for JAVA_HOME (if JAVA_HOME is not defined in $DEFAULT)
-JDK_DIRS="/usr/lib/jvm/jdk-7-oracle-x64 /usr/lib/jvm/java-7-oracle /usr/lib/jvm/java-7-openjdk /usr/lib/jvm/java-7-openjdk-amd64/ /usr/lib/jvm/java-7-openjdk-armhf /usr/lib/jvm/java-7-openjdk-i386/ /usr/lib/jvm/default-java"
-
-# Look for the right JVM to use
-for jdir in $JDK_DIRS; do
-    if [ -r "$jdir/bin/java" -a -z "${JAVA_HOME}" ]; then
-        JAVA_HOME="$jdir"
+      if [ ! -z "$pid_running" ] ; then
+        # EXIT IF ES IS ALREADY RUNNING
+        echo -e "\033[31;1mPID $es_pid still alive, already running...\033[0m"
+        return 1
+      fi
     fi
-done
-export JAVA_HOME
 
-DAEMON=$ES_HOME/bin/elasticsearch
-DAEMON_OPTS="-d -p $PID_FILE --default.config=$CONF_FILE --default.path.home=$ES_HOME --default.path.logs=$LOG_DIR --default.path.data=$DATA_DIR --default.path.work=$WORK_DIR --default.path.conf=$CONF_DIR"
+    echo -e "\033[1mStarting elasticsearch...\033[0m"
+    <% if node.platform_family == 'debian' %>
+    ES_INCLUDE=$ES_INCLUDE start-stop-daemon --background --start --pidfile $PIDFILE --chuid <%= node[:elasticsearch][:user] %> --exec /usr/local/bin/elasticsearch -- -p $PIDFILE
+    <% else %>
+    su <%= node[:elasticsearch][:user] %> -c "ES_INCLUDE=$ES_INCLUDE /usr/local/bin/elasticsearch<%= node[:elasticsearch][:version] > '1' ? ' -d' : '' %> -p $PIDFILE"
+    <% end %>
 
-checkJava() {
-	if [ -x "$JAVA_HOME/bin/java" ]; then
-		JAVA="$JAVA_HOME/bin/java"
-	else
-		JAVA=`which java`
-	fi
-
-	if [ ! -x "$JAVA" ]; then
-		echo "Could not find any executable java binary. Please install java in your PATH or set JAVA_HOME"
-		exit 1
-	fi
+    return $?
 }
+
+stop() {
+    if [[ -f $PIDFILE ]]; then
+      echo -n -e "\033[1mStopping elasticsearch...\033[0m"
+
+      # REMOVE PIDFILE AND EXIT IF PROCESS NOT RUNNING
+      if [ ! $CHECK_PID_RUNNING ]; then
+        echo -e "\033[1mPID file found, but no matching process running?\033[0m"
+        echo    "Removing PID file..."
+        su <%= node[:elasticsearch][:user] %> -m -c "rm $PIDFILE"
+        exit 0
+      fi
+
+      # KILL PROCESS
+      pid=$(cat $PIDFILE)
+      su <%= node[:elasticsearch][:user] %> -m -c "kill $(cat $PIDFILE)"
+      r=$?
+
+      # Check for process
+      timeout=0
+      while [ $(ps -p $pid | wc -l ) -gt '1' ]; do
+        echo -n '.'
+        (( timeout ++))
+        if [ $timeout -gt '30' ]; then return; fi
+        sleep 1
+      done;
+
+      # Check for pidfile
+      timeout=0
+      while [ -f $PIDFILE  ]; do
+        echo -n '.'
+        (( timeout++ ))
+        if [ $timeout -gt '15' ]; then return; fi
+        sleep 1
+      done; echo
+      return $r
+    else
+      echo -e "\033[1mNo PID file found -- elasticsearch not running?\033[0m"
+    fi
+}
+
+restart() {
+    stop
+    timeout=30
+    while ps aux | grep 'java' | grep -e "es.pidfile"; do
+      echo -n '.'
+      (( timeout-- ))
+      if [ $timeout -lt '1' ]; then return; fi
+      sleep 1
+    done;
+    start
+}
+
+status() {
+  # GOT PIDFILE?
+  [ -f $PIDFILE ] && pid=$(cat $PIDFILE)
+
+  # RUNNING
+  if [[ $pid && -d "/proc/$pid" ]]; then
+    version=$(curl -s 'http://localhost:<%= node.elasticsearch[:http][:port] %>' | ruby -rubygems -e 'require "json"; print JSON.parse(STDIN.read)["version"]["number"]')
+    echo -e "\033[1;37;46melasticsearch $version running with PID $pid\033[0m"
+    # VERBOSE
+    if [[ $pid && $1 == '-v' || $1 == '--verbose' ]]; then
+      curl -s 'http://localhost:<%= node.elasticsearch[:http][:port] %>/_cluster/nodes/<%= node.elasticsearch[:node][:name] %>?os&process&jvm&network&transport&settings&pretty' | \
+      ruby -rubygems -e '
+        begin
+          require "json"; h = JSON.parse(STDIN.read); id, node = h["nodes"].first;
+          def e(name, value); puts %Q|\e[1;36m#{(name.to_s+":").ljust(20)}\e[0m #{value || "N/A" rescue "N/A"}|; end
+          e "HTTP Address",  node["http_address"]
+          e "Node Name",     node["name"]
+          e "Cluster Name",  h["cluster_name"]
+          e "Started",       Time.at(node["jvm"]["start_time"].to_i/1000)
+          e "JVM",           "#{node["jvm"]["vm_name"]} (#{node["jvm"]["version"]})"
+          e "Memory Total",  node["os"]["mem"]["total"]
+          e "Open Files",    node["process"]["max_file_descriptors"]
+          e "Configuration", node["settings"]["config"]
+        rescue
+          puts "Metadata cannot be retrieved."
+        end
+      '
+    fi
+    # INCORRECT PID?
+    if [ $pid != $CHECK_PID_RUNNING ]; then
+      echo -e "\033[1;31;40m[!] Incorrect PID found in $PIDFILE: $pid\033[0m"
+      return 1
+    fi
+    return 0
+  fi
+
+  # NOT RUNNING
+  if [[ ! $pid || ! -d "/proc/$pid" ]]; then
+    echo -e "\033[1;33;40melasticsearch not running\033[0m"
+    return 3
+  fi
+
+  # STALE PID FOUND
+  if [[ ! -d "/proc/$pid" && -f $PIDFILE ]]; then
+    echo -e "\033[1;31;40m[!] Stale PID found in $PIDFILE\033[0m"
+    return 1
+  fi
+}
+
 
 case "$1" in
   start)
-	checkJava
-
-	if [ -n "$MAX_LOCKED_MEMORY" -a -z "$ES_HEAP_SIZE" ]; then
-		log_failure_msg "MAX_LOCKED_MEMORY is set - ES_HEAP_SIZE must also be set"
-		exit 1
-	fi
-
-	log_daemon_msg "Starting $DESC"
-
-	pid=`pidofproc -p $PID_FILE elasticsearch`
-	if [ -n "$pid" ] ; then
-		log_begin_msg "Already running."
-		log_end_msg 0
-		exit 0
-	fi
-
-	# Prepare environment
-	mkdir -p "$LOG_DIR" "$DATA_DIR" "$WORK_DIR" && chown "$ES_USER":"$ES_GROUP" "$LOG_DIR" "$DATA_DIR" "$WORK_DIR"
-	touch "$PID_FILE" && chown "$ES_USER":"$ES_GROUP" "$PID_FILE"
-
-	if [ -n "$MAX_OPEN_FILES" ]; then
-		ulimit -n $MAX_OPEN_FILES
-	fi
-
-	if [ -n "$MAX_LOCKED_MEMORY" ]; then
-		ulimit -l $MAX_LOCKED_MEMORY
-	fi
-
-	if [ -n "$MAX_MAP_COUNT" ]; then
-		sysctl -q -w vm.max_map_count=$MAX_MAP_COUNT
-	fi
-
-	# Start Daemon
-	start-stop-daemon --start -b --user "$ES_USER" -c "$ES_USER" --pidfile "$PID_FILE" --exec $DAEMON -- $DAEMON_OPTS
-	log_end_msg $?
-	;;		
+        start
+        ;;
   stop)
-	log_daemon_msg "Stopping $DESC"
-
-	if [ -f "$PID_FILE" ]; then 
-		start-stop-daemon --stop --pidfile "$PID_FILE" \
-			--user "$ES_USER" \
-			--retry=TERM/20/KILL/5 >/dev/null
-		if [ $? -eq 1 ]; then
-			log_progress_msg "$DESC is not running but pid file exists, cleaning up"
-		elif [ $? -eq 3 ]; then
-			PID="`cat $PID_FILE`"
-			log_failure_msg "Failed to stop $DESC (pid $PID)"
-			exit 1
-		fi
-		rm -f "$PID_FILE"
-	else
-		log_progress_msg "(not running)"
-	fi
-	log_end_msg 0
-	;;
+        stop
+        ;;
+  restart)
+        restart
+        ;;
   status)
-	status_of_proc -p $PID_FILE elasticsearch elasticsearch && exit 0 || exit $?
-    ;;
-  restart|force-reload)
-	if [ -f "$PID_FILE" ]; then
-		$0 stop
-		sleep 1
-	fi
-	$0 start
-	;;
+        status $2
+        ;;
   *)
-	log_success_msg "Usage: $0 {start|stop|restart|force-reload|status}"
-	exit 1
-	;;
+        echo $"Usage: $0 {start|stop|restart|status [-v]|}"
+        exit 1
 esac
 
-exit 0
+exit $?

@@ -9,13 +9,18 @@ ES_CLASSPATH=$ES_CLASSPATH:$ES_HOME/lib/*:$ES_HOME/lib/sigar/*
 ES_HEAP_SIZE=<%= node.elasticsearch[:allocated_memory] %>
 
 ES_JAVA_OPTS="
-  -server
-  -Djava.net.preferIPv4Stack=true
-  -Des.config=<%= node.elasticsearch[:path][:conf] %>/elasticsearch.yml
+  -Djava.awt.headless=true
+  -Des.default.config=<%= node.elasticsearch[:path][:conf] %>/elasticsearch.yml
   -Xms<%= node.elasticsearch[:allocated_memory] %>
   -Xmx<%= node.elasticsearch[:allocated_memory] %>
   -Xss<%= node.elasticsearch[:thread_stack_size] %>
   <%= node.elasticsearch[:gc_settings] %>
+  -Dfile.encoding=UTF-8
+  -Des.default.path.home=<%= "#{node.elasticsearch[:dir]}/elasticsearch" %>
+  -Des.default.path.logs=<%= node.elasticsearch[:path][:logs] %> 
+  -Des.default.path.data=<%= node.elasticsearch[:path][:data] %>
+  -Des.default.path.work=/tmp/elasticsearch
+  -Des.default.path.conf=<%= node.elasticsearch[:path][:conf] %>
 <% if node.elasticsearch[:jmx] %>
   -Dcom.sun.management.jmxremote.ssl=false
   -Dcom.sun.management.jmxremote.authenticate=false
