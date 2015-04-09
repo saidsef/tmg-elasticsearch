@@ -14,6 +14,9 @@ override['elasticsearch']['rpm_sha'] = "ec8b41c54a6d897479645b2507476e0824bc71db
 
 override['elasticsearch']['thread_stack_size'] = "512k"
 
+override['elasticsearch']['limits']['nofile'] = 'unlimited'
+override['elasticsearch']['limits']['memlock'] = 'unlimited'
+
 # === PLUGIN
 
 override['elasticsearch']['plugins']['elasticsearch/elasticsearch-cloud-aws']['version'] = '2.4.1'
