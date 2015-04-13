@@ -32,13 +32,20 @@
 ################################### Optimization ##############################
 
 index.store.type: niofs
-indices.memory.index_buffer_size: 37%
-index.translog.flush_threshold_ops: 50000
-refresh_interval: 60s
+indices.store.throttle.max_bytes_per_ses: 160m
+indices.memory.index_buffer_size: 35%
+#index.translog.flush_threshold_ops: 50000
+refresh_interval: 30s
 
 #refresh_interval: -1
 #index.number_of_replicas: 0
 
+#################################### Recovery #################################
+
+cluster.routing.allocation.node_initial_primaries_recoveries: 4
+cluster.routing.allocation.node_concurrent_recoveries: 3
+indices.recovery.max_bytes_per_sec: 100mb
+indices.recovery.concurrent_streams: 5
 
 #################################### Paths ####################################
 
