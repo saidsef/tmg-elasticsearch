@@ -14,7 +14,8 @@ override['elasticsearch']['rpm_sha'] = "ec8b41c54a6d897479645b2507476e0824bc71db
 
 override['elasticsearch']['thread_stack_size'] = "512k"
 
-override['elasticsearch']['limits']['nofile'] = 'unlimited'
+override['elasticsearch']['limits']['hard'] = 'unlimited'
+override['elasticsearch']['limits']['nofile'] = '500000'
 override['elasticsearch']['limits']['memlock'] = 'unlimited'
 
 # === PLUGIN

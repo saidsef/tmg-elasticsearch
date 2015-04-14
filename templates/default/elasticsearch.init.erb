@@ -13,7 +13,8 @@ if [ -f /etc/sysconfig/network ]; then source /etc/sysconfig/network; fi
 
 # Set limits for environments ignoring `/etc/security/limits.d`
 #
-ulimit -HSn <%= node[:elasticsearch][:limits][:nofile] %>
+ulimit -HS <%= node[:elasticsearch][:limits][:hard] %>
+ulimit -n <%= node[:elasticsearch][:limits][:nofile] %>
 ulimit -l <%= node[:elasticsearch][:limits][:memlock] %>
 
 sysctl -w fs.file-max=2097152
