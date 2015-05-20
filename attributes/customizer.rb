@@ -22,8 +22,8 @@ override['elasticsearch']['limits']['memlock'] = 'unlimited'
 
 override['elasticsearch']['plugins']['elasticsearch/elasticsearch-cloud-aws']['version'] = '2.4.1'
 override['elasticsearch']['plugins']['elasticsearch/marvel']['version'] = 'latest'
-override['elasticsearch']['plugins']['elasticsearch/shield']['version'] = 'latest'
-override['elasticsearch']['plugins']['elasticsearch/license']['version'] = 'latest'
+#override['elasticsearch']['plugins']['elasticsearch/shield']['version'] = 'latest'
+#override['elasticsearch']['plugins']['elasticsearch/license']['version'] = 'latest'
 
 # === MEMORY
 #
