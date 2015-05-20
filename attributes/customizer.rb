@@ -23,6 +23,7 @@ override['elasticsearch']['limits']['memlock'] = 'unlimited'
 override['elasticsearch']['plugins']['elasticsearch/elasticsearch-cloud-aws']['version'] = '2.4.1'
 override['elasticsearch']['plugins']['elasticsearch/marvel']['version'] = 'latest'
 override['elasticsearch']['plugins']['elasticsearch/shield']['version'] = 'latest'
+override['elasticsearch']['plugins']['elasticsearch/license']['version'] = 'latest'
 
 # === MEMORY
 #
@@ -30,6 +31,6 @@ override['elasticsearch']['plugins']['elasticsearch/shield']['version'] = 'lates
 # You may choose to set it in your node/role configuration instead.
 #
 allocated_memory = "#{(node.memory.total.to_i * 0.90 ).floor / 1024}m"
-allocated_heap = "#{(node.memory.total.to_i * 0.60 ).floor / 1024}m"
+allocated_heap = "#{(node.memory.total.to_i * 0.55 ).floor / 1024}m"
 default.elasticsearch[:allocated_memory] = allocated_memory
 default.elasticsearch[:allocated_heap] = allocated_heap
