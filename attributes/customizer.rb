@@ -29,4 +29,6 @@ override['elasticsearch']['plugins']['elasticsearch/marvel']['version'] = 'lates
 # You may choose to set it in your node/role configuration instead.
 #
 allocated_memory = "#{(node.memory.total.to_i * 0.90 ).floor / 1024}m"
+allocated_heap = "#{(node.memory.total.to_i * 0.60 ).floor / 1024}m"
 default.elasticsearch[:allocated_memory] = allocated_memory
+default.elasticsearch[:allocated_heap] = allocated_heap
