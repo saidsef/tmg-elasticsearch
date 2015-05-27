@@ -32,11 +32,13 @@
 ################################### Optimization ##############################
 
 index.store.type: niofs
-indices.store.throttle.max_bytes_per_ses: 160m
-indices.memory.index_buffer_size: 37%
-#index.translog.flush_threshold_ops: 50000
-refresh_interval: 30s
+indices.store.throttle.max_bytes_per_sec: 200m
+indices.store.throttle.type: none
+indices.memory.index_buffer_size: 30%
+indices.fielddata.cache.size: 75%
+refresh_interval: 60s
 
+#index.translog.flush_threshold_ops: 50000
 #refresh_interval: -1
 #index.number_of_replicas: 0
 
