@@ -18,6 +18,9 @@ override['elasticsearch']['limits']['hard'] = 'unlimited'
 override['elasticsearch']['limits']['nofile'] = '500000'
 override['elasticsearch']['limits']['memlock'] = 'unlimited'
 
+override['elasticsearch']['index.number_of_shards'] = 3
+override['elasticsearch']['index.number_of_replicas'] = 1
+
 # === PLUGIN
 
 override['elasticsearch']['plugins']['elasticsearch/elasticsearch-cloud-aws']['version'] = '2.4.1'
