@@ -18,11 +18,6 @@ rewind :template => "elasticsearch.yml" do
   cookbook_name "tmg-elasticsearch"
 end
 
-rewind :template => "/etc/init.d/elasticsearch" do
-  source "elasticsearch.init.erb"
-  cookbook_name "tmg-elasticsearch"
-  owner 'root' and mode 0755
-end
 
 rewind :template => "elasticsearch-env.sh" do
   path   "#{node.elasticsearch[:path][:conf]}/elasticsearch-env.sh"
