@@ -50,6 +50,6 @@ default['elasticsearch']['plugins']['elasticsearch/marvel']['version'] = 'latest
 # You may choose to set it in your node/role configuration instead.
 #
 allocated_memory = "#{(node.memory.total.to_i * 0.85 ).floor / 1024}m"
-allocated_heap   = "#{(node.memory.total.to_i * 0.40 ).floor / 1024}m"
+heap_size        = "#{(node.memory.total.to_i * 0.40 ).floor / 1024}m"
 default['elasticsearch']['allocated_memory'] = allocated_memory
 default['elasticsearch']['allocated_heap']   = heap_size
