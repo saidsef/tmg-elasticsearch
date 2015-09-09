@@ -5,4 +5,5 @@ license          'All rights reserved'
 description      'TMG Installs/Configures tmg-elasticsearch'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          '0.2.0'
+depends          'ark', '>= 0.2.4'
 depends          'elasticsearch', '~ 0.3.8'
