@@ -51,7 +51,7 @@ end
 
 logrotate_app "elasticsearch" do
   cookbook   'logrotate'
-  path       ['/var/log/elsticsearch/#{node['elasticsearch']['cluster.name']}.log']
+  path       ["/var/log/elsticsearch/#{node['elasticsearch']['cluster.name']}.log"]
   frequency  'daily'
   size       '50M'
   options    ['missingok', 'delaycompress', 'notifempty']
