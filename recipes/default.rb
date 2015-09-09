@@ -68,4 +68,4 @@ template "/etc/elasticsearch/elasticsearch.yml" do
   action :create
 end
 
-
+include_recipe 'tmg-elasticsearch::ebs'
