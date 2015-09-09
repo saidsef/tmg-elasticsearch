@@ -4,6 +4,10 @@
 #
 # Please see the source file for context and more information:
 
+ulimit -HS unlimited
+ulimit -l unlimited
+sysctl -w fs.file-max=2097152
+sysctl -w vm.max_map_count=262144
 swapoff -a
 
 ES_HOME=/usr/share/elasticsearch
