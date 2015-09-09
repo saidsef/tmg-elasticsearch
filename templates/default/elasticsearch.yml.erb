@@ -4,12 +4,6 @@
 #
 # Please see the source file for context and more information:
 #
-# https://github.com/elasticsearch/elasticsearch/blob/master/config/elasticsearch.yml
-
-# For information on supported formats and syntax for the config file, see
-# <http://elasticsearch.org/guide/en/elasticsearch/reference/current/setup-configuration.html>
-
-
 ################################### Cluster ###################################
 
 <%= print_value 'cluster.name' -%>
@@ -24,31 +18,24 @@
 
 <%= print_value 'index.number_of_shards' -%>
 <%= print_value 'index.number_of_replicas' -%>
-<%= print_value 'index.auto_expand_replicas' -%>
-<%= print_value 'index.mapper.dynamic' -%>
 <%= print_value 'action.auto_create_index' -%>
 <%= print_value 'action.disable_delete_all_indices' -%>
 
 ################################### Optimization ##############################
 
-index.store.type: niofs
-
-indices.store.throttle.max_bytes_per_sec: 200m
-indices.store.throttle.type: none
-indices.memory.index_buffer_size: 30%
-indices.fielddata.cache.size: 75%
-refresh_interval: 60s
-
-#index.translog.flush_threshold_ops: 50000
-#refresh_interval: -1
-#index.number_of_replicas: 0
+<%= print_value 'index.store.type' -%>
+<%= print_value 'indices.store.throttle.max_bytes_per_sec' -%>
+<%= print_value 'indices.store.throttle.type' -%>
+<%= print_value 'indices.memory.index_buffer_size' -%>
+<%= print_value 'indices.fielddata.cache.size' -%>
+<%= print_value 'refresh_interval' -%>
 
 #################################### Recovery #################################
 
-cluster.routing.allocation.node_initial_primaries_recoveries: 4
-cluster.routing.allocation.node_concurrent_recoveries: 3
-indices.recovery.max_bytes_per_sec: 100mb
-indices.recovery.concurrent_streams: 5
+<%= print_value 'cluster.routing.allocation.node_initial_primaries_recoveries' -%>
+<%= print_value 'cluster.routing.allocation.node_concurrent_recoveries' -%>
+<%= print_value 'indices.recovery.max_bytes_per_sec' -%>
+<%= print_value 'indices.recovery.concurrent_streams' -%>
 
 #################################### Paths ####################################
 

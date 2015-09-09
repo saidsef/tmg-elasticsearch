@@ -1,0 +1,26 @@
+# JVM Configuration for ElasticSearch
+# ===================================
+# This file is managed by Chef, do not edit manually, your changes *will* be overwritten!
+#
+# Please see the source file for context and more information:
+
+swapoff -a
+
+ES_HOME=/usr/share/elasticsearch
+CONF_DIR=/etc/elasticsearch
+CONF_FILE=$CONF_DIR/elasticsearch.yaml
+DATA_DIR=#{node['elasticsearch']['path.dir']}
+WORK_DIR=/tmp/elastcsearch
+PID_DIR=/var/run/elasticsearch
+# for HEAP_SIZE do not cross 32GB
+ES_HEAP_SIZE=#{node['elasticsearch']['heap_size']}
+# ES_HEAP_NEWSIZE - new generation
+ES_HEAP_NEWSIZE=#{node['elasticsearch']['heap_newsize']}
+ES_JAVA_OPTS=#{node['elasticsearch']['java_ops']}
+ES_RESTART_ON_UPGRADE=true
+ES_GC_LOG_FILE=/var/log/elasticsearch/gc.log
+ES_USER=elasticsearch
+ES_GROUP=elasticsearch
+MAX_OPEN_FILES=500000
+MAX_LOCKED_MEMORY=unlimited
+MAX_MAP_COUNT=262144
