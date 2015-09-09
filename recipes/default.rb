@@ -55,6 +55,11 @@ end
 
 include_recipe 'tmg-elasticsearch::plugins'
 
+template "/etc/default/elasticsearch" do
+  source "default.erb"
+  action :create
+end
+
 template "/etc/elasticsearch/elasticsearch.yml" do
   source "elasticsearch.yml.erb"
   owner node['elasticsearch']['user']
@@ -63,17 +68,4 @@ template "/etc/elasticsearch/elasticsearch.yml" do
   action :create
 end
 
-template "/etc/default/elasticsearch" do
-  source "default.erb"
-  action :create
-end
-
-logrotate_app "elasticsearch" do
-  cookbook   'logrotate'
-  path       "/var/log/elsticsearch/*.log"
-  frequency  'daily'
-  size       '50M'
-  options    ['missingok', 'delaycompress', 'notifempty']
-  rotate     1
-end
 
