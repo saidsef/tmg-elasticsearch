@@ -69,3 +69,4 @@ template "/etc/elasticsearch/elasticsearch.yml" do
 end
 
 include_recipe 'tmg-elasticsearch::ebs'
+include_recipe 'tmg-elasticsearch::data'
