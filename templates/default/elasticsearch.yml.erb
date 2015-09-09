@@ -12,37 +12,55 @@ cluster.name:<%= node['elasticsearch']['cluster.name'] -%>
 #################################### Node #####################################
 
 node.name:<%= node['elasticsearch']['node.name'] -%>
+
 node.master:<%= node['elasticsearch']['node.master'] -%>
+
 node.data:<%= node['elasticsearch']['node.data'] -%>
+
 node.max_local_storage_nodes:<%= node['elasticsearch']['node.max_local_storage_nodes'] -%>
 
 index.number_of_shards:<%= node['elasticsearch']['index.number_of_shards'] -%>
+
 index.number_of_replicas:<%= node['elasticsearch']['index.number_of_replicas'] -%>
+
 action.auto_create_index:<%= node['elasticsearch']['action.auto_create_index'] -%>
+
 action.disable_delete_all_indices:<%= node['elasticsearch']['action.disable_delete_all_indices'] -%>
 
 ################################### Optimization ##############################
 
 index.store.type:<%= node['elasticsearch']['index.store.type'] -%>
+
 indices.store.throttle.max_bytes_per_sec:<%= node['elasticsearch']['indices.store.throttle.max_bytes_per_sec'] -%>
+
 indices.store.throttle.type:<%= node['elasticsearch']['indices.store.throttle.type'] -%>
+
 indices.memory.index_buffer_size:<%= node['elasticsearch']['indices.memory.index_buffer_size'] -%>
+
 indices.fielddata.cache.size:<%= node['elasticsearch']['indices.fielddata.cache.size'] -%>
+
 refresh_interval:<%= node['elasticsearch']['refresh_interval'] -%>
 
 #################################### Recovery #################################
 
 cluster.routing.allocation.node_initial_primaries_recoveries:<%= node['elasticsearch']['cluster.routing.allocation.node_initial_primaries_recoveries'] -%>
+
 cluster.routing.allocation.node_concurrent_recoveries:<%= node['elasticsearch']['cluster.routing.allocation.node_concurrent_recoveries'] -%>
+
 indices.recovery.max_bytes_per_sec:<%= node['elasticsearch']['indices.recovery.max_bytes_per_sec'] -%>
+
 indices.recovery.concurrent_streams:<%= node['elasticsearch']['indices.recovery.concurrent_streams'] -%>
 
 #################################### Paths ####################################
 
 path.conf:<%= node['elasticsearch']['path.conf'] -%>
+
 path.data:<%= (node.elasticsearch.path.data.is_a?(Array) ? node.elasticsearch.path.data.join(",") : node.elasticsearch.path.data) -%>
+
 path.work:<%= node['elasticsearch']['path.work'] -%>
+
 path.logs:<%= node['elasticsearch']['path.logs'] -%>
+
 path.plugins:<%= node['elasticsearch']['path.plugins'] -%>
 
 #################################### Plugin ###################################
@@ -57,20 +75,31 @@ bootstrap.mlockall:<%= node['elasticsearch']['bootstrap.mlockall'] -%>
 ############################## Network And HTTP ###############################
 
 network.bind_host:<%= node['elasticsearch']['network.bind_host'] -%>
+
 network.publish_host:<%= node['elasticsearch']['network.publish_host'] -%>
+
 network.host:<%= node['elasticsearch']['network.host'] -%>
+
 transport.tcp.port:<%= node['elasticsearch']['transport.tcp.port'] -%>
+
 transport.tcp.compress:<%= node['elasticsearch']['transport.tcp.compress'] -%>
+
 http.host:<%= node['elasticsearch']['http.host'] -%>
+
 http.port:<%= node['elasticsearch']['http.port'] -%>
+
 http.max_content_length:<%= node['elasticsearch']['http.max_content_length'] -%>
+
 http.enabled:<%= node['elasticsearch']['http.enabled'] -%>
 
 ####################### Gateway / Recovery Throttling ##########################
 
 gateway.type:<%= node['elasticsearch']['gateway.type'] -%>
+
 gateway.recover_after_nodes:<%= node['elasticsearch']['gateway.recover_after_nodes'] -%>
+
 gateway.recover_after_time:<%= node['elasticsearch']['gateway.recover_after_time'] -%>
+
 gateway.expected_nodes:<%= node['elasticsearch']['gateway.expected_nodes'] -%>
 
 ################################## Discovery ##################################
@@ -78,21 +107,34 @@ gateway.expected_nodes:<%= node['elasticsearch']['gateway.expected_nodes'] -%>
 discovery.type:<%= node['elasticsearch']['discovery.type'] -%>
 
 discovery.zen.minimum_master_nodes:<%= node['elasticsearch']['discovery.zen.minimum_master_nodes'] -%>
+
 discovery.zen.ping.timeout:<%= node['elasticsearch']['discovery.zen.ping.timeout'] -%>
+
 discovery.zen.ping.multicast.enabled:<%= node['elasticsearch']['discovery.zen.ping.multicast.enabled'] -%>
+
 discovery.zen.ping.unicast.hosts:<%= node['elasticsearch']['discovery.zen.ping.unicast.hosts'] -%>
 
 <%- if node.elasticsearch[:cloud] -%>
 cloud.node.auto_attributes:<%= node['elasticsearch']['cloud.node.auto_attributes'] -%>
+
 cloud.aws.access_key:<%= node['elasticsearch']['cloud.aws.access_key'] -%>
+
 cloud.aws.secret_key:<%= node['elasticsearch']['cloud.aws.secret_key'] -%>
+
 cloud.aws.region:<%= node['elasticsearch']['cloud.aws.region'] -%>
+
 cloud.aws.ec2.endpoint:<%= node['elasticsearch']['cloud.aws.ec2.endpoint'] -%>
+
 discovery.ec2.groups:<%= node['elasticsearch']['discovery.ec2.groups'] -%>
+
 discovery.ec2.host_type:<%= node['elasticsearch']['discovery.ec2.host_type'] -%>
+
 discovery.ec2.availability_zones:<%= node['elasticsearch']['discovery.ec2.availability_zones'] -%>
+
 discovery.ec2.any_group:<%= node['elasticsearch']['discovery.ec2.any_group'] -%>
+
 discovery.ec2.ping_timeout:<%= node['elasticsearch']['discovery.ec2.ping_timeout'] -%>
+
 <%- node.elasticsearch[:discovery][:ec2][:tag].sort.each do |key, value| -%>
 discovery.ec2.tag.<%= key %>: <%= value %>
 <%- end unless node.elasticsearch[:discovery][:ec2][:tag].keys.empty? rescue false -%>
