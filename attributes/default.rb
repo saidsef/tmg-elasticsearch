@@ -11,6 +11,9 @@ default['elasticsearch']['index.number_of_replicas'] 	= 1
 
 # === DEFAULT PROPERTIES
 #
+default['elasticsearch']['user']			= 'elasticsearch'
+default['elasticsearch']['group']			= 'elasticsearch'
+default['elasticsearch']['skip_restart']	= false
 default['elasticsearch']['path.dir']		= #{node['elasticsearch']['path.data']}
 default['elasticsearch']['cluster.name'] 	= #{node['elasticsearch']['cluster.name']}
 default['elasticsearch']['node.name']		= #{node['fqdn']}

@@ -37,7 +37,7 @@ module Extensions
         version = params['version'] ? "/#{params['version']}" : nil
         url     = params['url']     ? " -url #{params['url']}" : nil
 
-        command = "/usr/share/elasticsearch/bin/plugin install #{name}#{version}#{url}"
+        command = "/usr/share/elasticsearch/bin/plugin -i #{name}#{version}#{url}"
         Chef::Log.debug command
 
         raise "[!] Failed to install plugin" unless system command
