@@ -70,3 +70,10 @@ end
 
 include_recipe 'tmg-elasticsearch::ebs'
 include_recipe 'tmg-elasticsearch::data'
+
+directory "/srv1/elasticsearch-storage/data" do
+  owner node.elasticsearch[:user]
+  group node.elasticsearch[:user]
+  mode 0755
+  recursive true
+end
