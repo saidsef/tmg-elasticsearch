@@ -1,0 +1,38 @@
+# JVM Configuration for ElasticSearch
+# ===================================
+# This file is managed by Chef, do not edit manually, your changes *will* be overwritten!
+#
+# Please see the source file for context and more information:
+
+ulimit -HS unlimited
+ulimit -l unlimited
+sysctl -w fs.file-max=2097152
+sysctl -w vm.max_map_count=262144
+sysctl -w vm.swappiness=1
+
+ES_HOME=/usr/share/elasticsearch
+CONF_DIR=/etc/elasticsearch
+CONF_FILE=/etc/elasticsearch/elasticsearch.yml
+
+DATA_DIR=<%= node['elasticsearch']['path.data'] -%>
+
+WORK_DIR=/tmp/elastcsearch
+
+PID_DIR=/var/run/elasticsearch
+
+ES_HEAP_SIZE=<%= node['elasticsearch']['allocated_memory'] -%>
+
+# ES_HEAP_NEWSIZE - new generation
+ES_HEAP_NEWSIZE=<%= node['elasticsearch']['allocated_heap'] -%>
+
+ES_JAVA_OPTS=<%= node['elasticsearch']['java_ops'] -%>
+
+ES_RESTART_ON_UPGRADE=true
+ES_GC_LOG_FILE=/var/log/elasticsearch/gc.log
+ES_USER=<%= node['elasticsearch']['user'] %>
+
+ES_GROUP=<%= node['elasticsearch']['group'] %>
+
+MAX_OPEN_FILES=500000
+MAX_LOCKED_MEMORY=unlimited
+MAX_MAP_COUNT=262144
