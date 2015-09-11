@@ -1,6 +1,6 @@
 
 wait_between_attempts = 30
-curl_validation_command = "-s --head -XGET localhost:9200/_cluster/health | grep 200"
+curl_validation_command = "curl -s --head -XGET localhost:9200/_cluster/health | grep 200"
 max_attempts = 30
 execute "Waiting for ElasticSearch Node to Start -- please wait..." do
 	command <<-EOH
