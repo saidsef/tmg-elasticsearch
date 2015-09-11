@@ -29,10 +29,8 @@ execute "Creating Infra Snapshot Entry" do
 	EHO
 end
 
-hour=Random.rand(3...5)
-
 cron "daily_snapshot" do
 	minute "0"
-	hour "#{hour}"
+	hour "3"
 	command "curl -s -XPUT http://localhost:9200/_snapshot/s3_infra_snapshot/snapshot_$(date -d +'%Y%m%d')?wait_for_completion=false"
 end
