@@ -37,19 +37,19 @@ module Extensions
         version = params['version'] ? "/#{params['version']}" : nil
         url     = params['url']     ? " -url #{params['url']}" : nil
 
-        command = "/usr/share/elasticsearch/bin/plugin -i #{name}#{version}#{url}"
+        command = "/usr/share/elasticsearch/bin/plugin -install #{name}#{version}#{url}"
         Chef::Log.debug command
 
         raise "[!] Failed to install plugin" unless system command
 
         # Ensure proper permissions
-        raise "[!] Failed to set permission" unless system "chown -R #{node.elasticsearch[:user]}:#{node.elasticsearch[:user]} /usr/share/elasticsearch/plugins/"
+        raise "[!] Failed to set permission" unless system "chown -R #{node.elasticsearch[:user]}:#{node.elasticsearch[:user]} #{node.elasticsearch[:dir]}/elasticsearch-#{node.elasticsearch[:version]}/plugins/"
       end
 
       notifies :restart, 'service[elasticsearch]' unless node.elasticsearch[:skip_restart]
 
       not_if do
-        Dir.entries("/usr/share/elasticsearch/plugins/").any? do |plugin|
+        Dir.entries("#{node.elasticsearch[:dir]}/elasticsearch-#{node.elasticsearch[:version]}/plugins/").any? do |plugin|
           next if plugin =~ /^\./
           name.include? plugin
         end rescue false

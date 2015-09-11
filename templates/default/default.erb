@@ -12,10 +12,14 @@ sysctl -w vm.swappiness=1
 
 ES_HOME=/usr/share/elasticsearch
 CONF_DIR=/etc/elasticsearch
-CONF_FILE=/etc/elasticsearch/elasticsearch.yaml
-DATA_DIR=<%= node['elasticsearch']['path.dir'] -%>
+CONF_FILE=/etc/elasticsearch/elasticsearch.yml
+
+DATA_DIR=<%= node['elasticsearch']['path.data'] -%>
+
 WORK_DIR=/tmp/elastcsearch
+
 PID_DIR=/var/run/elasticsearch
+
 # for HEAP_SIZE do not cross 32GB
 ES_HEAP_SIZE=<%= node['elasticsearch']['allocated_heap'] -%>
 
