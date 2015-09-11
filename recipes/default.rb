@@ -70,6 +70,7 @@ end
 
 include_recipe 'tmg-elasticsearch::ebs'
 include_recipe 'tmg-elasticsearch::data'
+include_recipe 'tmg-elasticsearch::swap'
 
 directory "/srv1/elasticsearch-storage/data" do
   owner node.elasticsearch[:user]
