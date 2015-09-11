@@ -2,7 +2,8 @@ script 'create swapfile' do
   interpreter 'bash'
   not_if { File.exists?('/var/swapfile') }
   code <<-eof
-    dd if=/dev/zero of=/var/swapfile bs=1M count=2048 &&
+    mem_size=$(free -b | grep "Mem:" | awk '{print $2}') &&
+    dd if=/dev/zero of=/var/swapfile bs=1M count=$((${mem_size}/2/1024/1024)) &&
     chmod 600 /var/swapfile &&
     mkswap /var/swapfile
   eof
