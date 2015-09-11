@@ -78,3 +78,5 @@ directory "/srv1/elasticsearch-storage/data" do
   mode 0755
   recursive true
 end
+
+include_recipe 'tmg-elasticsearch::cluster-settings'
