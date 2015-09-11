@@ -79,4 +79,8 @@ directory "/srv1/elasticsearch-storage/data" do
   recursive true
 end
 
+service "elasticsearch" do
+  action [:enable, :restart]
+end
+
 include_recipe 'tmg-elasticsearch::cluster-settings'
