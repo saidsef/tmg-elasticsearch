@@ -20,11 +20,15 @@ WORK_DIR=/tmp/elastcsearch
 
 PID_DIR=/var/run/elasticsearch
 
+ES_MIN_MEM= <%= node['elasticsearch']['allocated_memory'] -%>
+
+ES_MAX_MEN= <%= node['elasticsearch']['allocated_memory'] -%>
+
 # for HEAP_SIZE do not cross 32GB
 ES_HEAP_SIZE=<%= node['elasticsearch']['allocated_heap'] -%>
 
 # ES_HEAP_NEWSIZE - new generation
-#ES_HEAP_NEWSIZE=<%= node['elasticsearch']['heap_newsize'] -%>
+ES_HEAP_NEWSIZE=<%= node['elasticsearch']['allocated_heap'] -%>
 
 ES_JAVA_OPTS=<%= node['elasticsearch']['java_ops'] -%>
 
