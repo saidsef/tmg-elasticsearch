@@ -5,7 +5,7 @@ max_attempts = 30
 execute "Waiting for ElasticSearch Node to Start -- please wait..." do
 	command <<-EOH
 		sleep 15
-		ATTEMP=0
+		ATTEMPTS=0
 	  	while ! #{curl_validation_command} ; do
 	  		ATTEMPTS=$(expr ${ATTEMPTS} + 1)
 	  		echo "Waiting for ElasticSearch Node to Start -- please wait..."
