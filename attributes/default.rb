@@ -52,7 +52,5 @@ default['elasticsearch']['plugins']['elasticsearch/marvel']['version'] = 'latest
 # Maximum amount of memory to use is automatically computed as 85% of total available memory on the machine.
 # You may choose to set it in your node/role configuration instead.
 #
-allocated_memory = "#{(node.memory.total.to_i * 0.95 ).floor / 1024}m"
-heap_size        = "#{(node.memory.total.to_i * 0.40 ).floor / 1024}m"
+allocated_memory = "#{(node.memory.total.to_i * 0.92 ).floor / 1024}m"
 default['elasticsearch']['allocated_memory'] = allocated_memory
-default['elasticsearch']['allocated_heap']   = heap_size
