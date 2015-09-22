@@ -3,7 +3,7 @@ tmg-elasticsearch CHANGELOG
 
 This file is used to list changes made in each version of the tmg-elasticsearch cookbook.
 
-0.1.0
+0.2.5
 -----
 - [your_name] - Initial release of tmg-elasticsearch
 

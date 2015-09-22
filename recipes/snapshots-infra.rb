@@ -29,6 +29,10 @@ execute "Creating Infra Snapshot Entry" do
 	EHO
 end
 
+execute 'install elasticsearch-curator' do
+  command '/usr/bin/pip install -U elasticsearch-curator'
+end
+
 cron "daily_snapshot" do
 	minute "0"
 	hour "3"
