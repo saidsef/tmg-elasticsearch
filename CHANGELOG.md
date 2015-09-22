@@ -5,7 +5,7 @@ This file is used to list changes made in each version of the tmg-elasticsearch 
 
 0.2.5
 -----
-- [your_name] - Initial release of tmg-elasticsearch
+- [Said Sef] - Initial release of tmg-elasticsearch
 
 - - -
 Check the [Markdown Syntax Guide](http://daringfireball.net/projects/markdown/syntax) for help with Markdown.
